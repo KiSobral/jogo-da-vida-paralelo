@@ -111,6 +111,16 @@ services:
       - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
     networks:
       - elk_network
+  
+  worker:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: worker
+    volumes:
+      - ./:/app
+    networks:
+      - elk_network
 
 networks:
   elk_network:

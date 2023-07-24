@@ -1,6 +1,7 @@
 from kafka import KafkaConsumer
 from typing import Dict
 import json
+import time
 
 
 bootstrap_servers = 'localhost:19092,localhost:29092,localhost:39092'
@@ -48,6 +49,24 @@ def spark(powmin: int, powmax: int) -> None:
     print(powmax)
 
 
+def establish_connection():
+    keep_trying = True
+    
+    while keep_trying:
+        try:
+            _ = KafkaConsumer(topic_name, bootstrap_servers=bootstrap_servers,
+                                group_id='sample-tag')
+            keep_trying = False
+            print("Connection established!")
+            return None
+
+        except Exception:
+            print("Unable to establish connection. Trying again in 8 seconds...")
+            time.sleep(8)
+
+    return None
+
+
 def consume():
     consumer = KafkaConsumer(topic_name, bootstrap_servers=bootstrap_servers,
                              group_id='sample-tag')
@@ -65,4 +84,5 @@ def consume():
         consumer.close()
 
 if __name__ == "__main__":
+    establish_connection()
     consume()
