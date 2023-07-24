@@ -42,7 +42,7 @@ if __name__ == "__main__":
     payload = {
         "powmin": powmin,
         "powmax": powmax,
-        "metodo": metodo
+        "method": metodo
     }
 
     enviar_mensagem(json.dumps(payload))
