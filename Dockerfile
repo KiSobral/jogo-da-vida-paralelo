@@ -2,7 +2,8 @@ FROM ubuntu:latest
 
 RUN apt-get update && \
     apt-get upgrade -y && \
-    apt-get install -y python3 python3-pip build-essential mpich
+    apt-get install -y python3 python3-pip build-essential && \
+    apt-get install -y mpich libcurl4-openssl-dev
 
 COPY requirements.txt /app/
 

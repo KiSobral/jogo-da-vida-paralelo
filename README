@@ -1,0 +1,39 @@
+# Trabalho Final Programação para Sistemas Paralelos e Distribuídos
+
+## Como rodar
+
+Para rodar o projeto desenvolvido é necessário possuir instalada a ferramenta [Docker](https://www.docker.com/) e [Docker Compose](https://docs.docker.com/compose/). Caso você não possua essas ferramentas, é possível instalá-la seguindo suas documentações oficiais:
+
+* Arch: [Docker Desktop](https://docs.docker.com/desktop/install/archlinux/); [Docker Engine](https://wiki.archlinux.org/title/docker#Installation); [Docker Compose](https://wiki.archlinux.org/title/docker#Docker_Compose)
+* Ubuntu: [Docker Desktop](https://docs.docker.com/desktop/install/ubuntu/); [Docker Engine](https://docs.docker.com/engine/install/ubuntu/); [Docker Compose](https://docs.docker.com/compose/install/linux/#install-using-the-repository)
+* Windows: [Docker Desktop](https://docs.docker.com/desktop/install/windows-install/)
+* Mac: [Docker Desktop](https://docs.docker.com/desktop/install/mac-install/)
+
+Após a instalação do Docker, basta executar o comando abaixo para criar os containers que irão executar as ferramentas Elastic Search, Kibana, Zookeeper e Kafka.
+
+```bash
+$ docker compose up
+```
+
+O último container instanciado inicia um consumidor do tópico Kafka e fica disponível para execução do código do Jogo da Vida, desenvolvido em C, com as bibliotecas MPI e OMP.
+
+O consumidor espera receber uma mensagem no formato:
+
+```json
+{
+    "powmin": powmin,
+    "powmax": powmax,
+    "method": metodo
+}
+```
+
+Sendo `powmin` e `powmax` valores inteiros, enquanto `method` espera uma string.
+
+
+Para facilitar o envio de dados para o consumidor foi criado um código Python que realiza esse processo. Para executá-lo é necessário criar um ambiente virtual. Isso pode ser feito seguindo o tutorial da [Dataquest](https://www.dataquest.io/blog/a-complete-guide-to-python-virtual-environments/).
+
+Dentro do ambiente virtual instale as dependências com o comando `pip install -f requirements.txt`. Por fim basta executar o arquivo `producer.py` com o comando:
+
+```bash
+python3 producer.py
+```

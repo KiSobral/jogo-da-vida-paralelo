@@ -2,7 +2,7 @@ from kafka import KafkaConsumer
 from typing import Dict
 import json
 import time
-
+import os
 
 bootstrap_servers = 'localhost:19092,localhost:29092,localhost:39092'
 topic_name = 'trab-final'
@@ -39,8 +39,7 @@ def handle_message(payload: Dict) -> None:
 
 def omp_mpi(powmin: int, powmax: int) -> None:
     print("Tratando um omp-mpi")
-    print(powmin)
-    print(powmax)
+    os.system(f"mpirun -np 4 ./jogo_da_vida_elastic {powmin} {powmax}")
 
 
 def spark(powmin: int, powmax: int) -> None:
@@ -83,6 +82,10 @@ def consume():
     finally:
         consumer.close()
 
+def compile():
+    os.system("mpicc jogo_da_vida/jogodavidaMPIOMPElastic.c -fopenmp -lcurl -o jogo_da_vida_elastic")
+
 if __name__ == "__main__":
+    compile()
     establish_connection()
     consume()
